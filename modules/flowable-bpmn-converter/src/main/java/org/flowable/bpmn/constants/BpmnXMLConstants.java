@@ -41,6 +41,8 @@ public interface BpmnXMLConstants {
     public static final String ATTRIBUTE_ID = "id";
     public static final String ATTRIBUTE_NAME = "name";
     public static final String ATTRIBUTE_TYPE = "type";
+    public static final String ATTRIBUTE_EXPORTER = "exporter";
+    public static final String ATTRIBUTE_EXPORTER_VERSION = "exporterVersion";
     public static final String ATTRIBUTE_DEFAULT = "default";
     public static final String ATTRIBUTE_ITEM_REF = "itemRef";
     public static final String ELEMENT_DEFINITIONS = "definitions";
@@ -178,6 +180,7 @@ public interface BpmnXMLConstants {
     public static final String ATTRIBUTE_MULTIINSTANCE_INDEX_VARIABLE = "elementIndexVariable";
     public static final String ATTRIBUTE_MULTIINSTANCE_COLLECTION_CLASS = "class";
     public static final String ATTRIBUTE_MULTIINSTANCE_COLLECTION_DELEGATEEXPRESSION = "delegateExpression";
+    public static final String ATTRIBUTE_MULTIINSTANCE_NO_WAIT_STATES_ASYNC_LEAVE = "noWaitStatesAsyncLeave";
 
     public static final String ELEMENT_VARIABLE_AGGREGATION = "variableAggregation";
     public static final String ATTRIBUTE_VARIABLE_AGGREGATION_VARIABLE = "variable";
