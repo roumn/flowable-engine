@@ -30,6 +30,7 @@ import org.flowable.bpmn.converter.util.BpmnXMLUtil;
 import org.flowable.bpmn.model.Activity;
 import org.flowable.bpmn.model.Artifact;
 import org.flowable.bpmn.model.Assignment;
+import org.flowable.bpmn.model.AssignmentEventDefinition;
 import org.flowable.bpmn.model.BaseElement;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.CancelEventDefinition;
@@ -640,6 +641,24 @@ public abstract class BaseBpmnXMLConverter implements BpmnXMLConstants {
             }
         }
         
+        return didWriteExtensionStartElement;
+    }
+
+    protected boolean writeAssignmentDefinition(Event parentEvent, boolean didWriteExtensionStartElement, XMLStreamWriter xtw)
+            throws Exception {
+        if (parentEvent.getEventDefinitions().size() == 1) {
+            EventDefinition eventDefinition = parentEvent.getEventDefinitions().iterator().next();
+            if (eventDefinition instanceof AssignmentEventDefinition) {
+                if (!didWriteExtensionStartElement) {
+                    xtw.writeStartElement(ELEMENT_EXTENSIONS);
+                    didWriteExtensionStartElement = true;
+                }
+
+                xtw.writeEmptyElement(FLOWABLE_EXTENSIONS_PREFIX, ELEMENT_EVENT_ASSIGNMENTDEFINITION, FLOWABLE_EXTENSIONS_NAMESPACE);
+
+            }
+        }
+
         return didWriteExtensionStartElement;
     }
 

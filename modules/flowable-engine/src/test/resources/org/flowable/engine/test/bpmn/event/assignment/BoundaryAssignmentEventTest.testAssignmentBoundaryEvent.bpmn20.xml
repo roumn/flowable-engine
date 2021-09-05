@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef" exporter="Flowable Open Source Modeler" exporterVersion="6.7.0">
+  <process id="assignmentBoundaryEventTestProcess" name="Assignment Boundary Event Test Process" isExecutable="true">
+    <startEvent id="startEvent1" flowable:formFieldValidation="true"></startEvent>
+    <userTask id="userTask1" name="User Task" flowable:formFieldValidation="true">
+    </userTask>
+    <endEvent id="endEvent1"></endEvent>
+    <sequenceFlow id="sequenceFlow1" sourceRef="userTask1" targetRef="endEvent1"></sequenceFlow>
+    <boundaryEvent id="boundaryEvent1" attachedToRef="userTask1" cancelActivity="true">
+      <extensionElements>
+        <flowable:assignmentEventDefinition></flowable:assignmentEventDefinition>
+      </extensionElements>
+    </boundaryEvent>
+    <serviceTask id="serviceTask1" name="Set Variable" flowable:expression="${assignmentCount +1 }" flowable:resultVariableName="assignmentCount"></serviceTask>
+    <sequenceFlow id="sequenceFlow2" sourceRef="boundaryEvent1" targetRef="serviceTask1"></sequenceFlow>
+    <endEvent id="endEvent2"></endEvent>
+    <sequenceFlow id="sequenceFlow3" sourceRef="serviceTask1" targetRef="endEvent2"></sequenceFlow>
+    <serviceTask id="serviceTask2" name="Set count to 0" flowable:expression="${0}" flowable:resultVariableName="assignmentCount"></serviceTask>
+    <sequenceFlow id="sequenceFlow4" sourceRef="startEvent1" targetRef="serviceTask2"></sequenceFlow>
+    <sequenceFlow id="sequenceFlow5" sourceRef="serviceTask2" targetRef="userTask1"></sequenceFlow>
+  </process>
+
+</definitions>

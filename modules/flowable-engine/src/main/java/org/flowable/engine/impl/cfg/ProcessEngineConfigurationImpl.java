@@ -166,6 +166,7 @@ import org.flowable.engine.impl.bpmn.parser.factory.DefaultXMLImporterFactory;
 import org.flowable.engine.impl.bpmn.parser.factory.ListenerFactory;
 import org.flowable.engine.impl.bpmn.parser.factory.XMLImporterFactory;
 import org.flowable.engine.impl.bpmn.parser.handler.AdhocSubProcessParseHandler;
+import org.flowable.engine.impl.bpmn.parser.handler.AssignmentEventDefinitionParseHandler;
 import org.flowable.engine.impl.bpmn.parser.handler.BoundaryEventParseHandler;
 import org.flowable.engine.impl.bpmn.parser.handler.BusinessRuleParseHandler;
 import org.flowable.engine.impl.bpmn.parser.handler.CallActivityParseHandler;
@@ -1946,6 +1947,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
         bpmnParserHandlers.add(new TransactionParseHandler());
         bpmnParserHandlers.add(new UserTaskParseHandler());
         bpmnParserHandlers.add(new VariableListenerEventDefinitionParseHandler());
+        bpmnParserHandlers.add(new AssignmentEventDefinitionParseHandler());
 
         // Replace any default handler if the user wants to replace them
         if (customDefaultBpmnParseHandlers != null) {

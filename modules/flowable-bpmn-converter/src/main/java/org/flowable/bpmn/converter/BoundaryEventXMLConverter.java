@@ -21,10 +21,12 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
+import org.flowable.bpmn.converter.child.AssignmentEventDefinitionParser;
 import org.flowable.bpmn.converter.child.BaseChildElementParser;
 import org.flowable.bpmn.converter.child.InParameterParser;
 import org.flowable.bpmn.converter.child.VariableListenerEventDefinitionParser;
 import org.flowable.bpmn.converter.util.BpmnXMLUtil;
+import org.flowable.bpmn.model.AssignmentEventDefinition;
 import org.flowable.bpmn.model.BaseElement;
 import org.flowable.bpmn.model.BoundaryEvent;
 import org.flowable.bpmn.model.BpmnModel;
@@ -43,7 +45,9 @@ public class BoundaryEventXMLConverter extends BaseBpmnXMLConverter {
         InParameterParser inParameterParser = new InParameterParser();
         childParserMap.put(inParameterParser.getElementName(), inParameterParser);
         VariableListenerEventDefinitionParser variableListenerEventDefinitionParser = new VariableListenerEventDefinitionParser();
+        AssignmentEventDefinitionParser assignmentEventDefinitionParser = new AssignmentEventDefinitionParser();
         childParserMap.put(variableListenerEventDefinitionParser.getElementName(), variableListenerEventDefinitionParser);
+        childParserMap.put(assignmentEventDefinitionParser.getElementName(), assignmentEventDefinitionParser);
     }
 
     @Override
@@ -76,7 +80,7 @@ public class BoundaryEventXMLConverter extends BaseBpmnXMLConverter {
         if (boundaryEvent.getEventDefinitions().size() == 1) {
             EventDefinition eventDef = boundaryEvent.getEventDefinitions().get(0);
 
-            if (eventDef instanceof ErrorEventDefinition) {
+            if (eventDef instanceof ErrorEventDefinition || eventDef instanceof AssignmentEventDefinition) {
                 boundaryEvent.setCancelActivity(false);
             }
         }
@@ -112,7 +116,8 @@ public class BoundaryEventXMLConverter extends BaseBpmnXMLConverter {
     @Override
     protected boolean writeExtensionChildElements(BaseElement element, boolean didWriteExtensionStartElement, XMLStreamWriter xtw) throws Exception {
         BoundaryEvent boundaryEvent = (BoundaryEvent) element;
-        didWriteExtensionStartElement = writeVariableListenerDefinition(boundaryEvent, didWriteExtensionStartElement, xtw);        
+        didWriteExtensionStartElement = writeVariableListenerDefinition(boundaryEvent, didWriteExtensionStartElement, xtw);
+        didWriteExtensionStartElement = writeAssignmentDefinition(boundaryEvent, didWriteExtensionStartElement, xtw);
         return didWriteExtensionStartElement;
     }
 

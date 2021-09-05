@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.flowable.bpmn.model.AssignmentEventDefinition;
 import org.flowable.bpmn.model.BoundaryEvent;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.CancelEventDefinition;
@@ -68,7 +69,8 @@ public class BoundaryEventValidator extends ProcessLevelValidator {
                         !(eventDefinition instanceof ConditionalEventDefinition) && 
                         !(eventDefinition instanceof CompensateEventDefinition) && 
                         !(eventDefinition instanceof EscalationEventDefinition) &&
-                        !(eventDefinition instanceof VariableListenerEventDefinition)) {
+                        !(eventDefinition instanceof VariableListenerEventDefinition) &&
+                        !(eventDefinition instanceof AssignmentEventDefinition)) {
                     
                     addError(errors, Problems.BOUNDARY_EVENT_INVALID_EVENT_DEFINITION, process, boundaryEvent, eventDefinition, "Invalid or unsupported event definition");
                 }

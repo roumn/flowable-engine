@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.flowable.bpmn.model.Activity;
+import org.flowable.bpmn.model.AssignmentEventDefinition;
 import org.flowable.bpmn.model.BoundaryEvent;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.BusinessRuleTask;
@@ -59,6 +60,7 @@ import org.flowable.bpmn.model.VariableListenerEventDefinition;
 import org.flowable.common.engine.api.delegate.Expression;
 import org.flowable.engine.impl.bpmn.behavior.AbstractBpmnActivityBehavior;
 import org.flowable.engine.impl.bpmn.behavior.AdhocSubProcessActivityBehavior;
+import org.flowable.engine.impl.bpmn.behavior.BoundaryAssignmentEventActivityBehavior;
 import org.flowable.engine.impl.bpmn.behavior.BoundaryCancelEventActivityBehavior;
 import org.flowable.engine.impl.bpmn.behavior.BoundaryCompensateEventActivityBehavior;
 import org.flowable.engine.impl.bpmn.behavior.BoundaryConditionalEventActivityBehavior;
@@ -548,6 +550,12 @@ public class TestActivityBehaviorFactory extends AbstractBehaviorFactory impleme
     @Override
     public BoundaryVariableListenerEventActivityBehavior createBoundaryVariableListenerEventActivityBehavior(BoundaryEvent boundaryEvent, VariableListenerEventDefinition variableListenerEventDefinition, boolean interrupting) {
         return wrappedActivityBehaviorFactory.createBoundaryVariableListenerEventActivityBehavior(boundaryEvent, variableListenerEventDefinition, interrupting);
+    }
+
+    @Override
+    public BoundaryAssignmentEventActivityBehavior createBoundaryAssignmentEventActivityBehavior(BoundaryEvent boundaryEvent,
+            AssignmentEventDefinition assignmentEventDefinition, boolean interrupting) {
+        return wrappedActivityBehaviorFactory.createBoundaryAssignmentEventActivityBehavior(boundaryEvent, assignmentEventDefinition, interrupting);
     }
 
     // Mock support //////////////////////////////////////////////////////

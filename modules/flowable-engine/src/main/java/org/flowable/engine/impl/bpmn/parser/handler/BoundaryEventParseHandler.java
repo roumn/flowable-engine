@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
+import org.flowable.bpmn.model.AssignmentEventDefinition;
 import org.flowable.bpmn.model.BaseElement;
 import org.flowable.bpmn.model.BoundaryEvent;
 import org.flowable.bpmn.model.CancelEventDefinition;
@@ -67,7 +68,8 @@ public class BoundaryEventParseHandler extends AbstractFlowNodeBpmnParseHandler<
                 eventDefinition instanceof MessageEventDefinition || 
                 eventDefinition instanceof EscalationEventDefinition || 
                 eventDefinition instanceof CompensateEventDefinition ||
-                eventDefinition instanceof VariableListenerEventDefinition) {
+                eventDefinition instanceof VariableListenerEventDefinition ||
+                eventDefinition instanceof AssignmentEventDefinition) {
 
             bpmnParse.getBpmnParserHandlers().parseElement(bpmnParse, eventDefinition);
             return;

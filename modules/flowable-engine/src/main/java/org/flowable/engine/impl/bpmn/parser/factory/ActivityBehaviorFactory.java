@@ -13,6 +13,7 @@
 package org.flowable.engine.impl.bpmn.parser.factory;
 
 import org.flowable.bpmn.model.Activity;
+import org.flowable.bpmn.model.AssignmentEventDefinition;
 import org.flowable.bpmn.model.BoundaryEvent;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.BusinessRuleTask;
@@ -51,6 +52,7 @@ import org.flowable.bpmn.model.UserTask;
 import org.flowable.bpmn.model.VariableListenerEventDefinition;
 import org.flowable.engine.impl.bpmn.behavior.AbstractBpmnActivityBehavior;
 import org.flowable.engine.impl.bpmn.behavior.AdhocSubProcessActivityBehavior;
+import org.flowable.engine.impl.bpmn.behavior.BoundaryAssignmentEventActivityBehavior;
 import org.flowable.engine.impl.bpmn.behavior.BoundaryCancelEventActivityBehavior;
 import org.flowable.engine.impl.bpmn.behavior.BoundaryCompensateEventActivityBehavior;
 import org.flowable.engine.impl.bpmn.behavior.BoundaryConditionalEventActivityBehavior;
@@ -284,4 +286,7 @@ public interface ActivityBehaviorFactory {
     BoundaryEventRegistryEventActivityBehavior createBoundaryEventRegistryEventActivityBehavior(BoundaryEvent boundaryEvent, String eventDefinitionKey, boolean interrupting);
     
     BoundaryVariableListenerEventActivityBehavior createBoundaryVariableListenerEventActivityBehavior(BoundaryEvent boundaryEvent, VariableListenerEventDefinition variableListenerEventDefinition, boolean interrupting);
+
+    BoundaryAssignmentEventActivityBehavior createBoundaryAssignmentEventActivityBehavior(BoundaryEvent boundaryEvent, AssignmentEventDefinition assignmentEventDefinition, boolean interrupting);
+
 }

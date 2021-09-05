@@ -333,6 +333,8 @@ public interface BpmnXMLConstants {
     public static final String ATTRIBUTE_VARIABLE_NAME = "variableName";
     public static final String ATTRIBUTE_VARIABLE_CHANGE_TYPE = "variableChangeType";
 
+    public static final String ELEMENT_EVENT_ASSIGNMENTDEFINITION = "assignmentEventDefinition";
+
     public static final String ELEMENT_FORMPROPERTY = "formProperty";
     public static final String ATTRIBUTE_FORM_ID = "id";
     public static final String ATTRIBUTE_FORM_NAME = "name";
