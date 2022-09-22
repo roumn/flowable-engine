@@ -390,6 +390,7 @@ public class DefaultCmmnHistoryManager implements CmmnHistoryManager {
             h -> {
                 h.setEndedTime(exitTime);
                 h.setExitTime(exitTime);
+                h.setShowInOverview(evaluateShowInOverview(planItemInstanceEntity));
             });
     }
     
