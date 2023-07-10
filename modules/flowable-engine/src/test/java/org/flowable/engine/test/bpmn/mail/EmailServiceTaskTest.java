@@ -54,6 +54,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class EmailServiceTaskTest extends EmailTestCase {
 
+    private static ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
     @Deployment
     public void testSimpleTextMail() throws Exception {
@@ -72,22 +74,36 @@ public class EmailServiceTaskTest extends EmailTestCase {
     @ParameterizedTest
     @MethodSource(value = "recipientsTest")
     @Deployment
-    public void testDynamicRecipients(Object recipients) throws MessagingException {
-        runtimeService.createProcessInstanceBuilder().processDefinitionKey("dynamicRecipients").variable("recipients", recipients).start();
+    public void testDynamicRecipients(List<Object> recipients) throws MessagingException {
+        runtimeService.createProcessInstanceBuilder().processDefinitionKey("dynamicRecipients").variable("to", recipients.get(0))
+                .variable("cc", recipients.get(1))
+                .variable("bcc", recipients.get(2)).start();
         List<WiserMessage> messages = wiser.getMessages();
         assertThat(messages).hasSize(6);
         WiserMessage message = messages.get(0);
         MimeMessage mimeMessage = message.getMimeMessage();
 
         assertThat(mimeMessage.getHeader("To", null)).isEqualTo("flowable@localhost, misspiggy@flowable.org");
-        assertThat(mimeMessage.getHeader("Cc", null)).isEqualTo("flowable@localhost, misspiggy@flowable.org");
+        assertThat(mimeMessage.getHeader("Cc", null)).isEqualTo("cc@localhost, misspiggyCc@localhost");
+        assertThat(messages).extracting(WiserMessage::getEnvelopeReceiver)
+                .containsExactlyInAnyOrder("flowable@localhost", "misspiggy@flowable.org", "cc@localhost",
+                        "misspiggyCc@localhost", "bcc@localhost", "misspiggyBcc@localhost");
     }
 
     private static Stream<Arguments> recipientsTest() {
         return Stream.of(
-                Arguments.of("flowable@localhost, misspiggy@flowable.org"),
-                Arguments.of(Arrays.asList("flowable@localhost", "misspiggy@flowable.org")),
-                Arguments.of(new ObjectMapper().createArrayNode().add("flowable@localhost").add("misspiggy@flowable.org"))
+                Arguments.of(Arrays.asList(
+                        "flowable@localhost, misspiggy@flowable.org",
+                        "cc@localhost, misspiggyCc@localhost",
+                        "bcc@localhost, misspiggyBcc@localhost")),
+                Arguments.of(Arrays.asList(
+                        Arrays.asList("flowable@localhost", "misspiggy@flowable.org"),
+                        Arrays.asList("cc@localhost", "misspiggyCc@localhost"),
+                        Arrays.asList("bcc@localhost", "misspiggyBcc@localhost"))),
+                Arguments.of(Arrays.asList(
+                        objectMapper.createArrayNode().add("flowable@localhost").add("misspiggy@flowable.org"),
+                        objectMapper.createArrayNode().add("cc@localhost").add("misspiggyCc@localhost"),
+                        objectMapper.createArrayNode().add("bcc@localhost").add("misspiggyBcc@localhost")))
         );
     }
 

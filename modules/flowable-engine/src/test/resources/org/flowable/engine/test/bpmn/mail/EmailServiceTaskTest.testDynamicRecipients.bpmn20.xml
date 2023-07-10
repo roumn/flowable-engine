@@ -31,13 +31,13 @@
                     <flowable:string>This is the content</flowable:string>
                 </flowable:field>
                 <flowable:field name="to">
-                    <flowable:expression>${recipients}</flowable:expression>
+                    <flowable:expression>${to}</flowable:expression>
                 </flowable:field>
                 <flowable:field name="cc">
-                    <flowable:expression>${recipients}</flowable:expression>
+                    <flowable:expression>${cc}</flowable:expression>
                 </flowable:field>
                 <flowable:field name="bcc">
-                    <flowable:expression>${recipients}</flowable:expression>
+                    <flowable:expression>${bcc}</flowable:expression>
                 </flowable:field>
             </extensionElements>
         </serviceTask>

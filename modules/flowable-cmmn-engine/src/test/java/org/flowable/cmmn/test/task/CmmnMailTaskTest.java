@@ -165,42 +165,51 @@ public class CmmnMailTaskTest extends FlowableCmmnTestCase {
             );
 
     }
-    
+
     @Test
     @CmmnDeployment(resources = "org/flowable/cmmn/test/task/CmmnMailTaskTest.testTextMailExpressions.cmmn")
     public void testDynamicRecipientsStringList() throws MessagingException {
-        String recipients = "flowable@localhost, misspiggy@flowable.org";
-        testDynamicRecipientsInternal(recipients);
+        String to = "flowable@localhost, misspiggy@flowable.org";
+        String cc = "cc@localhost, misspiggyCc@flowable.org";
+        String bcc = "bcc@localhost, misspiggyBcc@flowable.org";
+        testDynamicRecipientsInternal(to, cc, bcc);
     }
 
     @Test
     @CmmnDeployment(resources = "org/flowable/cmmn/test/task/CmmnMailTaskTest.testTextMailExpressions.cmmn")
     public void testDynamicRecipientsArrayList() throws MessagingException {
-        List<String> recipients = Arrays.asList("flowable@localhost", "misspiggy@flowable.org");
-        testDynamicRecipientsInternal(recipients);
+        List<String> to = Arrays.asList("flowable@localhost", "misspiggy@flowable.org");
+        List<String> cc = Arrays.asList("cc@localhost", "misspiggyCc@flowable.org");
+        List<String> bcc = Arrays.asList("bcc@localhost", "misspiggyBcc@flowable.org");
+        testDynamicRecipientsInternal(to, cc, bcc);
     }
 
     @Test
     @CmmnDeployment(resources = "org/flowable/cmmn/test/task/CmmnMailTaskTest.testTextMailExpressions.cmmn")
     public void testDynamicRecipientsArrayNode() throws MessagingException {
-        ArrayNode recipients = new ObjectMapper().createArrayNode().add("flowable@localhost").add("misspiggy@flowable.org");
-        testDynamicRecipientsInternal(recipients);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode to = objectMapper.createArrayNode().add("flowable@localhost").add("misspiggy@flowable.org");
+        ArrayNode cc = objectMapper.createArrayNode().add("cc@localhost").add("misspiggyCc@flowable.org");
+        ArrayNode bcc = objectMapper.createArrayNode().add("bcc@localhost").add("misspiggyBcc@flowable.org");
+        testDynamicRecipientsInternal(to, cc, bcc);
     }
 
-    private void testDynamicRecipientsInternal(Object recipients) throws MessagingException {
+    private void testDynamicRecipientsInternal(Object to, Object cc, Object bcc) throws MessagingException {
         cmmnRuntimeService.createCaseInstanceBuilder()
                 .caseDefinitionKey("testMail")
-                .variable("toVar", recipients)
+                .variable("toVar", to)
                 .variable("fromVar", "from@flowable.org")
-                .variable("ccVar", recipients)
-                .variable("bccVar", recipients)
+                .variable("ccVar", cc)
+                .variable("bccVar", bcc)
                 .variable("subjectVar", "Testing")
                 .variable("bodyVar", "The test body")
                 .start();
         List<WiserMessage> messages = wiser.getMessages();
         MimeMessage mimeMessage = messages.get(0).getMimeMessage();
         assertThat(mimeMessage.getHeader("To", null)).isEqualTo("flowable@localhost, misspiggy@flowable.org");
-        assertThat(mimeMessage.getHeader("Cc", null)).isEqualTo("flowable@localhost, misspiggy@flowable.org");
+        assertThat(mimeMessage.getHeader("Cc", null)).isEqualTo("cc@localhost, misspiggyCc@flowable.org");
+        assertThat(messages).extracting(WiserMessage::getEnvelopeReceiver).containsExactlyInAnyOrder("flowable@localhost", "misspiggy@flowable.org",
+                "cc@localhost", "misspiggyCc@flowable.org", "bcc@localhost", "misspiggyBcc@flowable.org");
 
     }
 
